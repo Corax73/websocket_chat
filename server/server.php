@@ -5,6 +5,7 @@ require __DIR__ . '/../vendor/autoload.php';
 
 $server = new Worker('websocket://0.0.0.0:2346');
 $server->count = 4;
+
 $server->onConnect = function ($connection) {
     print "New connections \n";
 };
@@ -12,6 +13,7 @@ $server->onConnect = function ($connection) {
 $server->onMessage = function($connection, $data) use ($server)
 {
     foreach ($server->connections as $client) {
+        $data = trim($data, '"');
         $client->send($data);
     }
 };
